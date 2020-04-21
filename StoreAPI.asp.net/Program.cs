@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using DataAccessLayer.EF;
+using Store.DAL.EF;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,7 +23,7 @@ namespace StoreAPI.asp.net
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var dbContext = services.GetRequiredService<EFDbContext>();
+                    var dbContext = services.GetRequiredService<AppDBContext>();
                     //DbInitializer.Seed(dbContext);
                 }
                 catch (Exception ex)
