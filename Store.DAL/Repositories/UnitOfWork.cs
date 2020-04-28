@@ -9,21 +9,23 @@ namespace Store.DAL.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private AppDBContext Database;
+        private AppDBContext db;
         public UserManager<User> UserManager { get; }
         public RoleManager<IdentityRole> RoleManager { get; }
         public SignInManager<User> SignInManager { get; }
-        public UnitOfWork(AppDBContext db, SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        private IProductRepository _productRepository;
+        public UnitOfWork(AppDBContext context, SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
-            Database = db;
+            db = context;
             UserManager = userManager;
             RoleManager = roleManager;
             SignInManager = signInManager;
         }
-
+        public IProductRepository ProductRepository =>
+            _productRepository ?? (_productRepository = new ProductRepository(db));
         public async Task SaveAsync()
         {
-            await Database.SaveChangesAsync();
+            await db.SaveChangesAsync();
         }
         public void Dispose()
         {

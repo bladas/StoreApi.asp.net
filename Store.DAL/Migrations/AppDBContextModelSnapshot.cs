@@ -41,11 +41,6 @@ namespace Store.DAL.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new { Id = "6d94fb80-2fb0-4518-a25c-da49f7760b8b", ConcurrencyStamp = "5f86c6c3-5a2c-45dc-ae67-7919756eab78", Name = "Admin", NormalizedName = "ADMIN" },
-                        new { Id = "475f3c30-9b78-4ba4-8646-751c3a835a63", ConcurrencyStamp = "f6436247-ce03-4d4c-92ea-a1807369a277", Name = "User", NormalizedName = "USER" }
-                    );
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -153,15 +148,7 @@ namespace Store.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Available");
-
                     b.Property<int?>("CategoryId");
-
-                    b.Property<string>("Image");
-
-                    b.Property<bool>("IsFavourite");
-
-                    b.Property<string>("LongDescription");
 
                     b.Property<string>("Name");
 
@@ -173,7 +160,7 @@ namespace Store.DAL.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("Store.DAL.Entities.Role", b =>
@@ -298,7 +285,7 @@ namespace Store.DAL.Migrations
 
             modelBuilder.Entity("Store.DAL.Entities.Product", b =>
                 {
-                    b.HasOne("Store.DAL.Entities.Category", "Category")
+                    b.HasOne("Store.DAL.Entities.Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
                 });

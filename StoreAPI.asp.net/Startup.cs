@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Reflection;
+using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using StoreAPI.asp.net.MappingProfile;
 using Store.DAL.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +15,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Store.BLL.Interfaces;
+using Store.BLL.Services;
+using Store.DAL.Entities;
+using Store.DAL.Interfaces;
+using Store.DAL.Repositories;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace StoreAPI.asp.net
 {
@@ -30,6 +41,8 @@ namespace StoreAPI.asp.net
             services.AddDbContext<AppDBContext>(options =>
                options.UseSqlServer(Configuration
                    .GetConnectionString("DefaultConnection")));
+
+            services.AddAutoMapper(typeof(MappingProfile.MappingProfile).GetTypeInfo().Assembly);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

@@ -22,20 +22,14 @@ namespace Store.DAL.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Product>()
+           .ToTable("Product");
 
-           
 
-            // Admin Role
-            modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole() { Name = "Admin", NormalizedName = "Admin".ToUpper() },
-                new IdentityRole()
-                {
-                    Name = "User",
-                    NormalizedName = "User".ToUpper()
-                }
-            );
 
-           
+
+
+
         }
     }
 }

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.BLL.Interfaces;
 using Store.DAL.EF;
 using Store.DAL.Entities;
 using StoreAPI.asp.net.ViewModel;
@@ -15,14 +17,22 @@ namespace StoreAPI.asp.net.Controllers
     public class ProductController : ControllerBase
     {
         private readonly AppDBContext _context;
-        public ProductController(AppDBContext context)
+        private readonly IMapper _mapper;
+        private readonly IProductService _productService;
+        public ProductController(AppDBContext context,
+            IProductService productService,
+            IMapper mapper)
         {
             _context = context;
+            _productService = productService;
+            _mapper = mapper;
+            
         }
 
         [HttpPost("addproduct")]
-        public IActionResult AddProduct(ProductViewModel model)
+        public async Task<IActionResult> AddProduct(ProductViewModel model)
         {
+            /*
             if (!ModelState.IsValid)
             {
                 return BadRequest();
@@ -30,14 +40,19 @@ namespace StoreAPI.asp.net.Controllers
             var product = new Product
             {
                 Name = model.Name,
-                
+                ShortDescription = model.ShortDescription,
                 Price = model.Price
             };
 
-            _context.Products.Add(product);
-            _context.SaveChanges();
+            await _context.Products.AddAsync(product);
+           
 
             return Ok();
+            */
+            ProductDTO productDTO = _mapper.Map<ProductViewModel, ProductDTO>(model);
+            await _productService.CreateProduct(productDTO);
+            return Ok();
+           
         }
 
         [HttpPut("updateproduct")]

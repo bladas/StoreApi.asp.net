@@ -10,6 +10,7 @@ namespace Store.DAL.Interfaces
         UserManager<User> UserManager { get; }
         RoleManager<IdentityRole> RoleManager { get; }
         SignInManager<User> SignInManager { get; }
+        IProductRepository ProductRepository { get; }
         Task SaveAsync();
     }
 }

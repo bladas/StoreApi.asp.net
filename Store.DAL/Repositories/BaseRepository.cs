@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using Store.DAL.Entities;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Store.DAL.Repositories
 {
