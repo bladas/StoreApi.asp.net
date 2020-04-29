@@ -6,67 +6,53 @@ using System.Linq;
 using Store.DAL.Entities;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Store.DAL.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         protected readonly AppDBContext context;
-        protected readonly DbSet<T> entity;
+        protected readonly DbSet<T> _dbSet;
 
         public BaseRepository(AppDBContext _context)
         {
             context = _context;
-            entity = _context.Set<T>();
+            _dbSet = _context.Set<T>();
         }
 
-        public IQueryable<T> GetAll() => entity;
-
-        public T GetById(int id)
+        
+        public async Task AddAsync(T entity)
         {
-            return entity.Find(id);
+            _dbSet.Add(entity);
+            await context.SaveChangesAsync();          
         }
-
-        public T Create(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-            this.entity.Add(entity);
-            context.SaveChanges();
-            return entity;
-        }
-
-        public T Update(T entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
             context.Entry(entity).State = EntityState.Modified;
-            context.SaveChanges();
-            return entity;
+            await context.SaveChangesAsync();
         }
 
-        public bool Delete(T entity)
+        public async Task DeleteAsync(T id)
         {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-            if (this.entity.Contains(entity))
-            {
-                this.entity.Remove(entity);
-                context.SaveChanges();
-                return true;
-            }
-            return false;
+            T x = await _dbSet.FindAsync(id);
+            _dbSet.Remove(x);
+            await context.SaveChangesAsync();
         }
 
-        public void Save()
+        public async Task<T> GetAsync(T Id)
         {
-            context.SaveChanges();
+            return await _dbSet.FindAsync(Id);
         }
+
+        public async Task<IEnumerable<T>> GetAllAsync()
+        {
+            return await _dbSet.ToListAsync();
+        }
+        public IQueryable<T> FindByConditionAsync(Expression<Func<T, bool>> expression)
+        {
+            return _dbSet.Where(expression);
+        }
+       
     }
 }

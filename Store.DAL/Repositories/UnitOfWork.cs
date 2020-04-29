@@ -13,6 +13,7 @@ namespace Store.DAL.Repositories
         public UserManager<User> UserManager { get; }
         public RoleManager<IdentityRole> RoleManager { get; }
         public SignInManager<User> SignInManager { get; }
+
         private IProductRepository _productRepository;
         public UnitOfWork(AppDBContext context, SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -23,6 +24,7 @@ namespace Store.DAL.Repositories
         }
         public IProductRepository ProductRepository =>
             _productRepository ?? (_productRepository = new ProductRepository(db));
+
         public async Task SaveAsync()
         {
             await db.SaveChangesAsync();

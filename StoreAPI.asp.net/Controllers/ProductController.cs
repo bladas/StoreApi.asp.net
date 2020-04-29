@@ -19,40 +19,31 @@ namespace StoreAPI.asp.net.Controllers
         private readonly AppDBContext _context;
         private readonly IMapper _mapper;
         private readonly IProductService _productService;
+
         public ProductController(AppDBContext context,
-            IProductService productService,
-            IMapper mapper)
+            IProductService productService, IMapper mapper
+          )
         {
             _context = context;
-            _productService = productService;
             _mapper = mapper;
+            _productService = productService;
             
         }
 
         [HttpPost("addproduct")]
-        public async Task<IActionResult> AddProduct(ProductViewModel model)
+        public async Task<IActionResult> AddProduct([FromBody]ProductViewModel value)
         {
-            /*
-            if (!ModelState.IsValid)
-            {
+            if (!ModelState.IsValid) {
                 return BadRequest();
             }
-            var product = new Product
-            {
-                Name = model.Name,
-                ShortDescription = model.ShortDescription,
-                Price = model.Price
-            };
 
-            await _context.Products.AddAsync(product);
-           
+            var product = _mapper.Map<ProductViewModel, ProductDTO>(value);
+             var result =  await _productService.AddProductAsync(product);
 
-            return Ok();
-            */
-            ProductDTO productDTO = _mapper.Map<ProductViewModel, ProductDTO>(model);
-            await _productService.CreateProduct(productDTO);
-            return Ok();
-           
+            if (!result.Succedeed) return BadRequest(result.Message);
+
+            return Ok(result.Message);
+                                
         }
 
         [HttpPut("updateproduct")]

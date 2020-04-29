@@ -8,11 +8,15 @@ namespace Store.DAL.Interfaces
 {
     public interface IBaseRepository<T> where T : class
     {
-        IQueryable<T> GetAll();
-        T GetById(int id);
-        T Create(T entity);
-        T Update(T entity);
-        bool Delete(T entity);
-        void Save();
+        Task<IEnumerable<T>> GetAllAsync();
+
+        Task<T> GetAsync(T Id);
+
+        Task AddAsync(T entity);
+
+        Task UpdateAsync(T entity);
+
+        Task DeleteAsync(T id);
+        IQueryable<T> FindByConditionAsync(Expression<Func<T, bool>> expression);
     }
 }

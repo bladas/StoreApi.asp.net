@@ -42,8 +42,24 @@ namespace StoreAPI.asp.net
                options.UseSqlServer(Configuration
                    .GetConnectionString("DefaultConnection")));
 
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDBContext>().AddDefaultTokenProviders();
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+
+
+
             services.AddAutoMapper(typeof(MappingProfile.MappingProfile).GetTypeInfo().Assembly);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,11 +71,25 @@ namespace StoreAPI.asp.net
             }
             else
             {
-                app.UseHsts();
+                app.UseExceptionHandler("/Home/Error");
             }
+            app.UseDeveloperExceptionPage();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
-            app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseAuthentication();
+
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
+            app.UseAuthentication();
+           
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Account}/{action=Login}/{id?}");
+            });
+
         }
     }
 }

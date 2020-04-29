@@ -10,19 +10,10 @@ namespace Store.BLL.Interfaces
 {
     public interface IProductService
     {
-        Task<OperationDetails> CreateProduct(ProductDTO productDTO);
-        Task<OperationDetails> UpdateProduct(ProductDTO productDTO);
-
-       
-
-        IQueryable<Product> GetAllProducts();
-    
-      
-
-
- 
-
-        void DeleteProduct(int product_id);
-     
+        Task<OperationDetails> AddProductAsync(ProductDTO car);
+        Task UpdateProductAsync(ProductDTO car);
+        Task DeleteProductAsync(int Id);
+        //Task<ProductDTO> GetProductByIdAsync(int Id);
+        Task<IEnumerable<ProductDTO>> GetAllProductsAsync();
     }
 }
