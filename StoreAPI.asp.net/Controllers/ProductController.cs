@@ -40,7 +40,7 @@ namespace StoreAPI.asp.net.Controllers
             var product = _mapper.Map<ProductViewModel, ProductDTO>(value);
              var result =  await _productService.AddProductAsync(product);
 
-            if (!result.Succedeed) return BadRequest(result.Message);
+            if (!result.Succeeded) return BadRequest(result.Message);
 
             return Ok(result.Message);
                                 

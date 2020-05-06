@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Store.BLL.DTO;
 using Store.BLL.Interfaces;
 using Store.DAL.Entities;
 using StoreAPI.asp.net.ViewModel;
@@ -13,8 +14,13 @@ namespace StoreAPI.asp.net.MappingProfile
     {
         public MappingProfile()
         {
-
-
+            //User
+            CreateMap<ProductDTO, Product>();
+            CreateMap<User, UserDTO>();
+            CreateMap<UserDTO, User>();
+            CreateMap<LoginViewModel, UserDTO>();
+            CreateMap<RegisterViewModel, UserDTO>()
+          .ForMember(dest => dest.Role, opts => opts.MapFrom(src => "user"));
 
 
             //Product
@@ -23,8 +29,7 @@ namespace StoreAPI.asp.net.MappingProfile
                 .ForMember(dest => dest.ShortDescription, opts => opts.MapFrom(x => x.ShortDescription))
                 .ForMember(dest => dest.Price, opts => opts.MapFrom(x => x.Price));
 
-            CreateMap<ProductDTO, Product>();
-              
+            
 
         }
     }

@@ -12,7 +12,8 @@ namespace Store.BLL.Interfaces
     public interface IUserService : IDisposable
     {
 
-        Task<OperationDetails> Create(UserDTO userDto);
-        Task<bool> Authenticate(UserDTO userDto);
+        Task<OperationDetails> CreateAsync(UserDTO userDto);
+        Task<bool> SignInAsync(UserDTO userDto);
+        Task SignOutAsync();
     }
 }

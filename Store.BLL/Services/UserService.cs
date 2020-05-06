@@ -21,12 +21,13 @@ namespace Store.BLL.Services
         }
 
 
-        public async Task<OperationDetails> Create(UserDTO userDto)
+        public async Task<OperationDetails> CreateAsync(UserDTO userDto)
         {
             User user = await Database.UserManager.FindByEmailAsync(userDto.Email);
             if (user == null)
             {
-                user = new User { Email = userDto.Email, UserName = userDto.UserName, Birthday = userDto.Birthday, Gender = userDto.Gender, PhoneNumber = userDto.Phone };
+
+                user = new User { Email = userDto.Email, UserName = userDto.Email, FirstName = userDto.FirstName, LastName = userDto.LastName, PhoneNumber = userDto.PhoneNumber };
                 var result = await Database.UserManager.CreateAsync(user, userDto.Password);
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault().ToString(), "");
@@ -36,14 +37,14 @@ namespace Store.BLL.Services
 
 
                 await Database.SaveAsync();
-                return new OperationDetails(true, "Registration successfully completed!", "");
+                return new OperationDetails(true, "Congratulations! Your account has been created.", "");
             }
             else
             {
                 return new OperationDetails(false, "User with this login already exists", "Email");
             }
         }
-        public async Task<bool> Authenticate(UserDTO userDto)
+        public async Task<bool> SignInAsync(UserDTO userDto)
         {
 
             var user = await Database.UserManager.FindByEmailAsync(userDto.Email);
@@ -58,7 +59,10 @@ namespace Store.BLL.Services
 
             return auth.Succeeded;
         }
-
+        public async Task SignOutAsync()
+        {
+            await Database.SignInManager.SignOutAsync();
+        }
         public void Dispose()
         {
             Database.Dispose();

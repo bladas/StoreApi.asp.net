@@ -15,11 +15,11 @@ namespace Store.BLL.Services
 {
     public class ProductService: IProductService
     {
-        IUnitOfWork _unitOfWork;
+        IUnitOfWork Database;
         private readonly IMapper _mapper;
         public ProductService(IUnitOfWork uow, IMapper mapper)
         {
-            _unitOfWork = uow;
+            Database = uow;
             _mapper = mapper;
 
         }
@@ -27,7 +27,7 @@ namespace Store.BLL.Services
         {
             var product = _mapper.Map<ProductDTO, Product>(productDTO);
             try { 
-                await _unitOfWork.ProductRepository.AddAsync(product); 
+                await Database.ProductRepository.AddAsync(product); 
             }
             catch (Exception ex) {
                 return new OperationDetails(false,ex.Message,"Error");
@@ -38,12 +38,12 @@ namespace Store.BLL.Services
         }
         public async Task DeleteProductAsync(int Id)
         {
-            //await _unitOfWork.ProductRepository.DeleteAsync(Id);
+            //await Database.ProductRepository.DeleteAsync(Id);
         }
 
         public async Task<IEnumerable<ProductDTO>> GetAllProductsAsync()
         {
-            var x = await _unitOfWork.ProductRepository.GetAllAsync();
+            var x = await Database.ProductRepository.GetAllAsync();
             List<ProductDTO> result = _mapper.Map<List<ProductDTO>>(x);//надо проверить
             //List<CarDTO> result = new List<CarDTO>();
             //foreach (var element in x)
@@ -54,7 +54,7 @@ namespace Store.BLL.Services
         public async Task<ProductDTO> GetProductByIdAsync(int Id)
         {
             
-            var x = await _unitOfWork.ProductRepository.GetAsync(1);
+            var x = await Database.ProductRepository.GetAsync(1);
             return _mapper.Map<Product, ProductDTO>(x);
             
         }
@@ -62,7 +62,7 @@ namespace Store.BLL.Services
         public async Task UpdateProductAsync(ProductDTO prd)
         {
             var x = _mapper.Map<ProductDTO, Product>(prd);
-            await _unitOfWork.ProductRepository.UpdateAsync(x);
+            await Database.ProductRepository.UpdateAsync(x);
         }
        
 

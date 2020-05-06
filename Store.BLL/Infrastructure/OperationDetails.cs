@@ -9,11 +9,11 @@ namespace Store.BLL.Infrastructure
         public OperationDetails() { }
         public OperationDetails(bool succedeed, string message, string prop)
         {
-            Succedeed = succedeed;
+            Succeeded = succedeed;
             Message = message;
             Property = prop;
         }
-        public bool Succedeed { get; set; }
+        public bool Succeeded { get; set; }
         public string Message { get; set; }
         public string Property { get; set; }
     }
