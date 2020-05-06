@@ -17,7 +17,7 @@ namespace Store.DAL.EF
 
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,11 +25,6 @@ namespace Store.DAL.EF
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Product>()
            .ToTable("Product");
-
-
-
-
-
 
         }
     }

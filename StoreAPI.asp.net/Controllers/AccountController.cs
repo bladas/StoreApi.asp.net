@@ -19,45 +19,64 @@ namespace StoreAPI.asp.net.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly AppDBContext _context;
+        
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         //private readonly SignInManager<User> AuthenticationManager;
-        public AccountController(AppDBContext context, IUserService userService, IMapper mapper)
-        {
-            _context = context;
+        public AccountController(IUserService userService, IMapper mapper)
+        {         
             _userService = userService;
             _mapper = mapper;
         }
-
+             
         [HttpPost]
         [AllowAnonymous]
-        [Route("register")]
-        public async Task<ActionResult> Register(RegisterViewModel value)
+        [Route("register")]      
+        public async Task<IActionResult> Register([FromBody]RegisterViewModel model)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var user = _mapper.Map<RegisterViewModel, UserDTO>(model);
+            var result = await _userService.CreateAsync(user);
+
+            if (result.Succeeded) return Ok();          
+                                 
+             return BadRequest(result.Message);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var user = _mapper.Map<RegisterViewModel, UserDTO>(value);
-            var result = await _userService.CreateAsync(user);
 
-            if (result.Succeeded)
+            var loginModel = _mapper.Map<LoginViewModel, UserDTO>(model);
+            var identity = await _userService.SignInAsync(loginModel);
+
+            if (!identity)
             {
-                return Ok();
+               
+                return BadRequest(ModelState);
             }
-            else
-                ModelState.AddModelError(result.Property, result.Message);
 
-            return BadRequest(ModelState);
+            return Ok();
         }
-        [HttpGet("getallusers")]
-        public IActionResult GetAllProducts()
-        {
-            var user = _context.Users.ToList();
-            if (user == null) return BadRequest();
 
-            return Ok(user);
-        }
+        //[HttpGet("getallusers")]
+        //public IActionResult GetAllProducts()
+        //{
+        //    var user = _context.Users.ToList();
+        //    if (user == null) return BadRequest();
+
+        //    return Ok(user);
+        //}
     }
 }

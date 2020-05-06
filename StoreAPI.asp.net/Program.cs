@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
+using Store.DAL.DbInitialize;
 
 namespace StoreAPI.asp.net
 {
@@ -16,15 +18,17 @@ namespace StoreAPI.asp.net
     {
         public static void Main(string[] args)
         {
-            var host = BuildWebHost(args);
+            var host = CreateWebHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var dbContext = services.GetRequiredService<AppDBContext>();
-                    //DbInitializer.Seed(dbContext);
+                    using (var dbInitializer = new DBInitializer(services))
+                    {
+                        dbInitializer.SeedData().Wait();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -36,9 +40,11 @@ namespace StoreAPI.asp.net
             host.Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-         WebHost.CreateDefaultBuilder(args)
-            .UseStartup<Startup>()
-            .Build();
-        }
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .UseUrls(urls: "http://localhost:5000");
     }
+
+}
+

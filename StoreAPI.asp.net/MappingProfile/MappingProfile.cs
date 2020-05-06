@@ -29,7 +29,13 @@ namespace StoreAPI.asp.net.MappingProfile
                 .ForMember(dest => dest.ShortDescription, opts => opts.MapFrom(x => x.ShortDescription))
                 .ForMember(dest => dest.Price, opts => opts.MapFrom(x => x.Price));
 
-            
+
+            CreateMap<RegisterViewModel, UserDTO>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
+            CreateMap<UserDTO, User>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
+
+            CreateMap<LoginViewModel, UserDTO>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
+            CreateMap<UserDTO, User>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
+
 
         }
     }

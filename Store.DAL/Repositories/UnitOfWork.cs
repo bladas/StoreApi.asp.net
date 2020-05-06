@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Store.DAL.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork , IDisposable
     {
         private AppDBContext db;
         public UserManager<User> UserManager { get; }

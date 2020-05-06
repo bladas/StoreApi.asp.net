@@ -1,4 +1,5 @@
-﻿using Store.BLL.DTO;
+﻿using AutoMapper;
+using Store.BLL.DTO;
 using Store.BLL.Infrastructure;
 using Store.BLL.Interfaces;
 using Store.DAL.Entities;
@@ -11,43 +12,42 @@ using System.Threading.Tasks;
 
 namespace Store.BLL.Services
 {
-    public class UserService : IUserService
+    public class UserService : BaseService, IUserService 
     {
-        IUnitOfWork Database { get; set; }
-
-        public UserService(IUnitOfWork uow)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
-            Database = uow;
         }
+
+
 
 
         public async Task<OperationDetails> CreateAsync(UserDTO userDto)
         {
-            User user = await Database.UserManager.FindByEmailAsync(userDto.Email);
+            var user = await unitOfWork.UserManager.FindByEmailAsync(userDto.Email);
+
             if (user == null)
             {
+                var userIdentity = mapper.Map<UserDTO,User>(userDto);
+                var result = await unitOfWork.UserManager.CreateAsync(userIdentity, userDto.Password);
 
-                user = new User { Email = userDto.Email, UserName = userDto.Email, FirstName = userDto.FirstName, LastName = userDto.LastName, PhoneNumber = userDto.PhoneNumber };
-                var result = await Database.UserManager.CreateAsync(user, userDto.Password);
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault().ToString(), "");
 
-                await Database.UserManager.AddToRoleAsync(user, userDto.Role);
+                await unitOfWork.UserManager.AddToRoleAsync(userIdentity, "User");
+                await unitOfWork.SaveAsync();
 
-
-
-                await Database.SaveAsync();
                 return new OperationDetails(true, "Congratulations! Your account has been created.", "");
             }
             else
             {
                 return new OperationDetails(false, "User with this login already exists", "Email");
             }
+
         }
         public async Task<bool> SignInAsync(UserDTO userDto)
         {
 
-            var user = await Database.UserManager.FindByEmailAsync(userDto.Email);
+            var user = await unitOfWork.UserManager.FindByEmailAsync(userDto.Email);
             if (user == null)
             {
                 return false;
@@ -55,17 +55,14 @@ namespace Store.BLL.Services
             //var username = user.UserName;
             var email = user.Email;
 
-            var auth = await Database.SignInManager.PasswordSignInAsync(email, userDto.Password, false, lockoutOnFailure: false);
+            var auth = await unitOfWork.SignInManager.PasswordSignInAsync(email, userDto.Password, false, lockoutOnFailure: false);
 
             return auth.Succeeded;
         }
         public async Task SignOutAsync()
         {
-            await Database.SignInManager.SignOutAsync();
+            await unitOfWork.SignInManager.SignOutAsync();
         }
-        public void Dispose()
-        {
-            Database.Dispose();
-        }
+       
     }
 }

@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace Store.BLL.Interfaces
 {
-    public interface IUserService : IDisposable
+    public interface IUserService 
     {
-
         Task<OperationDetails> CreateAsync(UserDTO userDto);
         Task<bool> SignInAsync(UserDTO userDto);
         Task SignOutAsync();
