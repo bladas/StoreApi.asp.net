@@ -62,7 +62,7 @@ namespace StoreAPI.asp.net.Controllers
             var identity = await _userService.SignInAsync(loginModel);
 
             if (!identity)
-            {
+            {   
                
                 return BadRequest(ModelState);
             }

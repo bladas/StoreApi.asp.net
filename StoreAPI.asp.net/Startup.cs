@@ -50,7 +50,7 @@ namespace StoreAPI.asp.net
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            
+            services.AddCors();
 
 
             services.AddAutoMapper(typeof(MappingProfile.MappingProfile).GetTypeInfo().Assembly);
@@ -83,6 +83,8 @@ namespace StoreAPI.asp.net
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors(options =>
+            options.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod());
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
