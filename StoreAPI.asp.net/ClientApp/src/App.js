@@ -3,38 +3,58 @@ import './App.css';
 import {connect} from 'react-redux'
 import {ProductsFetchData} from "./actions/products";
 
-class App extends Component{
 
-    componentDidMount(){
-    this.props.fetchData('https://localhost:44398/api/product/getallproducts/')
-    }
-    render(){
-        return(
-            <div>
-                <ul>
-                    {this.props.products.map((product , index)=>{
-                        return <li key = {index}>
-                            <div>Name is : {product.name}</div>
-                            <div>Name is : {product.shortDescription}</div>
-                            <div>Name is : {product.price}</div>
-                        </li>
-                    }
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./components/Home";
 
-                    )}
-
-                </ul>
-            </div>
-        );
-    }
-}
-const mapStateToProps = state => {
-    return{
-        products: state.products
-    };
+const App = ()=>
+{
+    return(
+        <div>
+        <Header/>
+        <Home/>
+        <Footer/>
+        </div>
+    )
 };
-const mapDispatchToProps = dispatch => {
-    return{
-        fetchData: url => dispatch(ProductsFetchData(url))
-    };
-};
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+export default App;
+
+
+
+
+// class App extends Component{
+//
+//     componentDidMount(){
+//     this.props.fetchData('https://localhost:44398/api/product/getallproducts/')
+//     }
+//     render(){
+//         return(
+//             <div>
+//                 <ul>
+//                     {this.props.products.map((product , index)=>{
+//                         return <li key = {index}>
+//                             <div>Name is : {product.name}</div>
+//                             <div>Name is : {product.shortDescription}</div>
+//                             <div>Name is : {product.price}</div>
+//                         </li>
+//                     }
+//
+//                     )}
+//
+//                 </ul>
+//             </div>
+//         );
+//     }
+// }
+// const mapStateToProps = state => {
+//     return{
+//         products: state.products
+//     };
+// };
+// const mapDispatchToProps = dispatch => {
+//     return{
+//         fetchData: url => dispatch(ProductsFetchData(url))
+//     };
+// };
+// export default connect(mapStateToProps,mapDispatchToProps)(App);
