@@ -7,15 +7,27 @@ import {ProductsFetchData} from "./actions/products";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
+import {BrowserRouter, Route} from "react-router-dom";
+import Product from "./components/Product";
+import Store from "./components/Store";
 
 const App = ()=>
 {
     return(
-        <div>
-        <Header/>
-        <Home/>
-        <Footer/>
-        </div>
+        <BrowserRouter>
+            <div className='app-wraper'>
+            <Header/>
+            <div className='app-wraper-content'>
+                <Route path='/home' component={Home}/>
+                <Route path='/product' component={Product}/>
+                <Route path='/store' component={Store}/>
+
+
+            </div>
+
+            <Footer/>
+            </div>
+        </BrowserRouter>
     )
 };
 export default App;

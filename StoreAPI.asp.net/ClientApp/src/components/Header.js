@@ -125,7 +125,7 @@ const Header = () =>{
 				<div id="responsive-nav">
 
 					<ul className="main-nav nav navbar-nav">
-						<li className="active"><a href="#">Home</a></li>
+						<li className="active"><a href="/home">Home</a></li>
 						<li><a href="#">Hot Deals</a></li>
 						<li><a href="#">Categories</a></li>
 						<li><a href="#">Laptops</a></li>
