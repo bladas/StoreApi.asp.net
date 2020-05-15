@@ -43,9 +43,9 @@ namespace StoreAPI.asp.net.Controllers
             var user = _mapper.Map<RegisterViewModel, UserDTO>(model);
             var result = await _userService.CreateAsync(user);
 
-            if (result.Succeeded) return Ok();          
+            return Ok(result);          
                                  
-             return BadRequest(result.Message);
+             
         }
 
         [AllowAnonymous]
@@ -61,13 +61,9 @@ namespace StoreAPI.asp.net.Controllers
             var loginModel = _mapper.Map<LoginViewModel, UserDTO>(model);
             var identity = await _userService.SignInAsync(loginModel);
 
-            if (!identity)
-            {   
-               
-                return BadRequest(ModelState);
-            }
+            
 
-            return Ok();
+            return Ok(identity);
         }
 
         //[HttpGet("getallusers")]

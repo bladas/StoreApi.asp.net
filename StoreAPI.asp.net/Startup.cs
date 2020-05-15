@@ -22,7 +22,10 @@ using Store.DAL.Interfaces;
 using Store.DAL.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
+using System.Text;
 
 namespace StoreAPI.asp.net
 {
@@ -38,6 +41,7 @@ namespace StoreAPI.asp.net
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddDbContext<AppDBContext>(options =>
                options.UseSqlServer(Configuration
                    .GetConnectionString("DefaultConnection")));
@@ -74,6 +78,31 @@ namespace StoreAPI.asp.net
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = false;
             });
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                   .AddJwtBearer(options =>
+                   {
+                       options.RequireHttpsMetadata = false;
+                       options.TokenValidationParameters = new TokenValidationParameters
+                       {
+                          
+                           ValidateIssuer = true,
+                           
+                           ValidIssuer = Configuration["JwtIssuer"],
+
+                          
+                           ValidateAudience = true,
+                           
+                           ValidAudience = Configuration["JwtAudience"],
+                           
+                           ValidateLifetime = true,
+
+                           
+                           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecurityKey"])),
+                          
+                           ValidateIssuerSigningKey = true,
+                           ClockSkew = TimeSpan.Zero
+                       };
+                   });
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();

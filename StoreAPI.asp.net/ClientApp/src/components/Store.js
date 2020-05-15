@@ -12,8 +12,8 @@ const Store = () =>{
 						<ul className="breadcrumb-tree">
 							<li><a href="#">Home</a></li>
 							<li><a href="#">All Categories</a></li>
-							<li><a href="#">Accessories</a></li>
-							<li className="active">Headphones (227,490 Results)</li>
+							{/*<li><a href="#">Accessories</a></li>*/}
+							{/*<li className="active">Headphones (227,490 Results)</li>*/}
 						</ul>
 					</div>
 				</div>
@@ -114,100 +114,11 @@ const Store = () =>{
 
 
 
-						<div className="aside">
-							<h3 className="aside-title">Brand</h3>
-							<div className="checkbox-filter">
-								<div className="input-checkbox">
-									<input type="checkbox" id="brand-1"></input>
-										<label htmlFor="brand-1">
-											<span></span>
-											SAMSUNG
-											<small>(578)</small>
-										</label>
-								</div>
-								<div className="input-checkbox">
-									<input type="checkbox" id="brand-2"></input>
-										<label htmlFor="brand-2">
-											<span></span>
-											LG
-											<small>(125)</small>
-										</label>
-								</div>
-								<div className="input-checkbox">
-									<input type="checkbox" id="brand-3"></input>
-										<label htmlFor="brand-3">
-											<span></span>
-											SONY
-											<small>(755)</small>
-										</label>
-								</div>
-								<div className="input-checkbox">
-									<input type="checkbox" id="brand-4"></input>
-										<label htmlFor="brand-4">
-											<span></span>
-											SAMSUNG
-											<small>(578)</small>
-										</label>
-								</div>
-								<div className="input-checkbox">
-									<input type="checkbox" id="brand-5"></input>
-										<label htmlFor="brand-5">
-											<span></span>
-											LG
-											<small>(125)</small>
-										</label>
-								</div>
-								<div className="input-checkbox">
-									<input type="checkbox" id="brand-6"></input>
-										<label htmlFor="brand-6">
-											<span></span>
-											SONY
-											<small>(755)</small>
-										</label>
-								</div>
-							</div>
-						</div>
 
 
 
-						<div className="aside">
-							<h3 className="aside-title">Top selling</h3>
-							<div className="product-widget">
-								<div className="product-img">
-									<img src="./img/product01.png" alt=""></img>
-								</div>
-								<div className="product-body">
-									<p className="product-category">Category</p>
-									<h3 className="product-name"><a href="#">product name goes here</a></h3>
-									<h4 className="product-price">$980.00 <del
-										className="product-old-price">$990.00</del></h4>
-								</div>
-							</div>
 
-							<div className="product-widget">
-								<div className="product-img">
-									<img src="./img/product02.png" alt=""></img>
-								</div>
-								<div className="product-body">
-									<p className="product-category">Category</p>
-									<h3 className="product-name"><a href="#">product name goes here</a></h3>
-									<h4 className="product-price">$980.00 <del
-										className="product-old-price">$990.00</del></h4>
-								</div>
-							</div>
 
-							<div className="product-widget">
-								<div className="product-img">
-									<img src="./img/product03.png" alt=""></img>
-								</div>
-								<div className="product-body">
-									<p className="product-category">Category</p>
-									<h3 className="product-name"><a href="#">product name goes here</a></h3>
-									<h4 className="product-price">$980.00 <del
-										className="product-old-price">$990.00</del></h4>
-								</div>
-							</div>
-						</div>
 
 					</div>
 
@@ -215,29 +126,7 @@ const Store = () =>{
 
 					<div id="store" className="col-md-9">
 
-						<div className="store-filter clearfix">
-							<div className="store-sort">
-								<label>
-									Sort By:
-									<select className="input-select">
-										<option value="0">Popular</option>
-										<option value="1">Position</option>
-									</select>
-								</label>
 
-								<label>
-									Show:
-									<select className="input-select">
-										<option value="0">20</option>
-										<option value="1">50</option>
-									</select>
-								</label>
-							</div>
-							<ul className="store-grid">
-								<li className="active"><i className="fa fa-th"></i></li>
-								<li><a href="#"><i className="fa fa-th-list"></i></a></li>
-							</ul>
-						</div>
 
 
 

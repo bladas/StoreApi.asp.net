@@ -7,21 +7,29 @@ using Store.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
+using System.Text;
 
 namespace Store.BLL.Services
 {
     public class UserService : BaseService, IUserService 
     {
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+
+        private readonly IConfiguration _configuration;
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration configuration) : base(unitOfWork, mapper)
         {
+            _configuration = configuration;
         }
 
 
 
 
-        public async Task<OperationDetails> CreateAsync(UserDTO userDto)
+        public async Task<object> CreateAsync(UserDTO userDto)
         {
             var user = await unitOfWork.UserManager.FindByEmailAsync(userDto.Email);
 
@@ -36,7 +44,7 @@ namespace Store.BLL.Services
                 await unitOfWork.UserManager.AddToRoleAsync(userIdentity, "User");
                 await unitOfWork.SaveAsync();
 
-                return new OperationDetails(true, "Congratulations! Your account has been created.", "");
+                return BuildToken(userIdentity) ;
             }
             else
             {
@@ -44,7 +52,7 @@ namespace Store.BLL.Services
             }
 
         }
-        public async Task<bool> SignInAsync(UserDTO userDto)
+        public async Task<object> SignInAsync(UserDTO userDto)
         {
 
             var user = await unitOfWork.UserManager.FindByEmailAsync(userDto.Email);
@@ -56,13 +64,49 @@ namespace Store.BLL.Services
             var email = user.Email;
 
             var auth = await unitOfWork.SignInManager.PasswordSignInAsync(email, userDto.Password, false, lockoutOnFailure: false);
-
-            return auth.Succeeded;
+            if (auth.Succeeded)
+            {
+                //return "Login successful";
+                return (BuildToken(user),"Thats work");
+            }
+            else
+            {
+                return "Not succeeded (invalid password)";
+            }
         }
         public async Task SignOutAsync()
         {
             await unitOfWork.SignInManager.SignOutAsync();
         }
-       
+
+        private object BuildToken(User user)
+        {
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.Email),
+                
+                new Claim(ClaimTypes.Email, user.Email)
+            };
+
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSecurityKey"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            // Expiration time
+            var expiration = DateTime.UtcNow;
+
+            JwtSecurityToken token = new JwtSecurityToken(
+               issuer: null,
+               audience: null,
+               claims: claims,
+               expires: expiration,
+               signingCredentials: creds);
+
+            return new
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token)//,
+                //Expiration = expiration
+            };
+        }
     }
 }

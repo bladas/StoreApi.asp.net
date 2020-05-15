@@ -11,8 +11,8 @@ namespace Store.BLL.Interfaces
 {
     public interface IUserService 
     {
-        Task<OperationDetails> CreateAsync(UserDTO userDto);
-        Task<bool> SignInAsync(UserDTO userDto);
+        Task<object> CreateAsync(UserDTO userDto);
+        Task<object> SignInAsync(UserDTO userDto);
         Task SignOutAsync();
     }
 }

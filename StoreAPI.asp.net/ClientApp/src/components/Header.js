@@ -6,9 +6,9 @@ const Header = () =>{
         <div id="top-header">
 				<div className="container">
 					<ul className="header-links pull-left">
-						<li><a href="#"><i className="fa fa-phone"></i> +021-95-51-84</a></li>
+						<li><a href="#"><i className="fa fa-phone"></i> +012-34-56-79	</a></li>
 						<li><a href="#"><i className="fa fa-envelope-o"></i> email@email.com</a></li>
-						<li><a href="#"><i className="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
+
 					</ul>
 					<ul className="header-links pull-right">
 						<li><a href="#"><i className="fa fa-dollar"></i> USD</a></li>
@@ -126,12 +126,12 @@ const Header = () =>{
 
 					<ul className="main-nav nav navbar-nav">
 						<li className="active"><a href="/home">Home</a></li>
-						<li><a href="#">Hot Deals</a></li>
-						<li><a href="#">Categories</a></li>
-						<li><a href="#">Laptops</a></li>
-						<li><a href="#">Smartphones</a></li>
-						<li><a href="#">Cameras</a></li>
-						<li><a href="#">Accessories</a></li>
+						<li><a href="/product">Product</a></li>
+						<li><a href="/store">Store</a></li>
+						{/*<li><a href="#">Laptops</a></li>*/}
+						{/*<li><a href="#">Smartphones</a></li>*/}
+						{/*<li><a href="#">Cameras</a></li>*/}
+						{/*<li><a href="#">Accessories</a></li>*/}
 					</ul>
 
 				</div>
