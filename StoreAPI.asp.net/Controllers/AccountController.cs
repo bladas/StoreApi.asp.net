@@ -19,19 +19,19 @@ namespace StoreAPI.asp.net.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        
+
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
-        //private readonly SignInManager<User> AuthenticationManager;
+        
         public AccountController(IUserService userService, IMapper mapper)
-        {         
+        {
             _userService = userService;
             _mapper = mapper;
         }
-             
+
         [HttpPost]
         [AllowAnonymous]
-        [Route("register")]      
+        [Route("register")]
         public async Task<IActionResult> Register([FromBody]RegisterViewModel model)
         {
 
@@ -42,10 +42,9 @@ namespace StoreAPI.asp.net.Controllers
 
             var user = _mapper.Map<RegisterViewModel, UserDTO>(model);
             var result = await _userService.CreateAsync(user);
+            return Ok(result);
 
-            return Ok(result);          
-                                 
-             
+
         }
 
         [AllowAnonymous]
@@ -61,7 +60,7 @@ namespace StoreAPI.asp.net.Controllers
             var loginModel = _mapper.Map<LoginViewModel, UserDTO>(model);
             var identity = await _userService.SignInAsync(loginModel);
 
-            
+
 
             return Ok(identity);
         }

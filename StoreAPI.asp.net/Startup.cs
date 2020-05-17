@@ -41,7 +41,7 @@ namespace StoreAPI.asp.net
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
             services.AddDbContext<AppDBContext>(options =>
                options.UseSqlServer(Configuration
                    .GetConnectionString("DefaultConnection")));
@@ -84,21 +84,21 @@ namespace StoreAPI.asp.net
                        options.RequireHttpsMetadata = false;
                        options.TokenValidationParameters = new TokenValidationParameters
                        {
-                          
+
                            ValidateIssuer = true,
-                           
+
                            ValidIssuer = Configuration["JwtIssuer"],
 
-                          
+
                            ValidateAudience = true,
-                           
+
                            ValidAudience = Configuration["JwtAudience"],
-                           
+
                            ValidateLifetime = true,
 
-                           
+
                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecurityKey"])),
-                          
+
                            ValidateIssuerSigningKey = true,
                            ClockSkew = TimeSpan.Zero
                        };
@@ -131,7 +131,7 @@ namespace StoreAPI.asp.net
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-           
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

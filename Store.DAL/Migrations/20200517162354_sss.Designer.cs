@@ -10,8 +10,8 @@ using Store.DAL.EF;
 namespace Store.DAL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20200506204110_f")]
-    partial class f
+    [Migration("20200517162354_sss")]
+    partial class sss
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React  from 'react';
 import './App.css';
-import {connect} from 'react-redux'
-import {ProductsFetchData} from "./actions/products";
+// import {connect} from 'react-redux'
+// import {ProductsFetchData} from "./actions/products";
 
 
 import Header from "./components/Header";
@@ -10,7 +10,8 @@ import Home from "./components/Home";
 import {BrowserRouter, Route} from "react-router-dom";
 import Product from "./components/Product";
 import Store from "./components/Store";
-
+import Login from "./components/user/login";
+import Register from "./components/user/registration"
 const App = ()=>
 {
     return(
@@ -19,6 +20,8 @@ const App = ()=>
             <Header/>
             <div className='app-wraper-content'>
                 <Route path='/home' component={Home}/>
+                <Route path='/login' component={Login}/>
+                <Route path='/registration' component={Register}/>
                 <Route path='/product' component={Product}/>
                 <Route path='/store' component={Store}/>
 

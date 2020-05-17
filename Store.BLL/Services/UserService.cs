@@ -17,7 +17,7 @@ using System.Text;
 
 namespace Store.BLL.Services
 {
-    public class UserService : BaseService, IUserService 
+    public class UserService : BaseService, IUserService
     {
 
         private readonly IConfiguration _configuration;
@@ -35,7 +35,7 @@ namespace Store.BLL.Services
 
             if (user == null)
             {
-                var userIdentity = mapper.Map<UserDTO,User>(userDto);
+                var userIdentity = mapper.Map<UserDTO, User>(userDto);
                 var result = await unitOfWork.UserManager.CreateAsync(userIdentity, userDto.Password);
 
                 if (result.Errors.Count() > 0)
@@ -44,11 +44,11 @@ namespace Store.BLL.Services
                 await unitOfWork.UserManager.AddToRoleAsync(userIdentity, "User");
                 await unitOfWork.SaveAsync();
 
-                return BuildToken(userIdentity) ;
+                return BuildToken(userIdentity);
             }
             else
             {
-                return new OperationDetails(false, "User with this login already exists", "Email");
+                return "FCK";
             }
 
         }
@@ -67,12 +67,13 @@ namespace Store.BLL.Services
             if (auth.Succeeded)
             {
                 //return "Login successful";
-                return (BuildToken(user),"Thats work");
+                return BuildToken(user);
             }
             else
             {
                 return "Not succeeded (invalid password)";
             }
+            
         }
         public async Task SignOutAsync()
         {
@@ -84,7 +85,7 @@ namespace Store.BLL.Services
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.Email),
-                
+
                 new Claim(ClaimTypes.Email, user.Email)
             };
 
