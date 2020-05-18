@@ -43,7 +43,7 @@ export const userLoginFetch = user => {
     })
       .then(resp => resp.json())
       .then(data => {
-          // console.log(data.jwt)
+           console.log(data.token)
         if (data.message) {
          //тут ваша логика
         } else {
@@ -52,5 +52,33 @@ export const userLoginFetch = user => {
         }
       })
 
+  }
+}
+export const getProfileFetch = () => {
+  return dispatch => {
+    const token = localStorage.token;
+
+    if (token) {
+      return fetch("https://localhost:44398/api/account/getuserbytoken", {
+       method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          'token': token
+      },
+
+
+      })
+        .then(resp => resp.json())
+        .then(data => {
+            console.log(data)
+          if (data.message) {
+            // Будет ошибка если token не дествительный
+            localStorage.removeItem("token")
+          } else {
+            dispatch(loginUser(data.user))
+          }
+        })
+    }
   }
 }

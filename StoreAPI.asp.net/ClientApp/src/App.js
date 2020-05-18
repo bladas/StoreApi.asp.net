@@ -1,4 +1,4 @@
-import React  from 'react';
+import React, {Component} from 'react';
 import './App.css';
 // import {connect} from 'react-redux'
 // import {ProductsFetchData} from "./actions/products";
@@ -12,9 +12,14 @@ import Product from "./components/Product";
 import Store from "./components/Store";
 import Login from "./components/user/login";
 import Register from "./components/user/registration"
-const App = ()=>
-{
-    return(
+import {getProfileFetch} from "./actions/actions";
+import {connect} from "react-redux";
+class App extends Component {
+  componentDidMount = () => {
+    this.props.getProfileFetch()
+  }
+  render() {
+    return (
         <BrowserRouter>
             <div className='app-wraper'>
             <Header/>
@@ -32,9 +37,13 @@ const App = ()=>
             </div>
         </BrowserRouter>
     )
-};
-export default App;
+}
+}
+const mapDispatchToProps = dispatch => ({
+  getProfileFetch: () => dispatch(getProfileFetch())
+})
 
+export default connect(null, mapDispatchToProps)(App);
 
 
 

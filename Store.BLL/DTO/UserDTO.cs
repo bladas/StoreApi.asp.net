@@ -20,4 +20,9 @@ namespace Store.BLL.DTO
 
 
     }
+    public class UserTokenDTO
+    {
+        public string Token { get; set; }
+        
+    }
 }

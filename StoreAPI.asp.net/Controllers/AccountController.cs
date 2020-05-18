@@ -22,7 +22,7 @@ namespace StoreAPI.asp.net.Controllers
 
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
-        
+
         public AccountController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
@@ -65,13 +65,14 @@ namespace StoreAPI.asp.net.Controllers
             return Ok(identity);
         }
 
-        //[HttpGet("getallusers")]
-        //public IActionResult GetAllProducts()
-        //{
-        //    var user = _context.Users.ToList();
-        //    if (user == null) return BadRequest();
-
-        //    return Ok(user);
-        //}
+        [HttpGet]
+        [Route("getuserbytoken")]
+        public async Task<ActionResult<UserDTO>> GetUserByToken()
+        {
+            string Token = Request.Headers["token"];
+            var res = await _userService.GetUserFromAccessToken(Token);
+            
+            return Ok(res);
+        }
     }
 }

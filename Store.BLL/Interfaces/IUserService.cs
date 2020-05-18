@@ -13,6 +13,7 @@ namespace Store.BLL.Interfaces
     {
         Task<object> CreateAsync(UserDTO userDto);
         Task<object> SignInAsync(UserDTO userDto);
+        Task<object> GetUserFromAccessToken(string Token);
         Task SignOutAsync();
     }
 }

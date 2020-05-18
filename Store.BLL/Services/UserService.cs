@@ -73,14 +73,14 @@ namespace Store.BLL.Services
             {
                 return "Not succeeded (invalid password)";
             }
-            
+
         }
         public async Task SignOutAsync()
         {
             await unitOfWork.SignInManager.SignOutAsync();
         }
 
-        private object BuildToken(User user)
+        private UserTokenDTO BuildToken(User user)
         {
             var claims = new[]
             {
@@ -103,11 +103,45 @@ namespace Store.BLL.Services
                expires: expiration,
                signingCredentials: creds);
 
-            return new
+            return new UserTokenDTO()
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token)//,
                 //Expiration = expiration
             };
+        }
+        public async Task<object> GetUserFromAccessToken(string Token)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_configuration["JwtSecurityKey"]);
+
+                var tokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+
+                SecurityToken securityToken;
+                var principle = tokenHandler.ValidateToken(Token, tokenValidationParameters, out securityToken);
+
+                JwtSecurityToken jwtSecurityToken = securityToken as JwtSecurityToken;
+
+                if (jwtSecurityToken != null && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var userEmail = principle.FindFirst(ClaimTypes.Email)?.Value;
+                    var res = mapper.Map<User, UserDTO>(await unitOfWork.UserManager.FindByEmailAsync(userEmail));
+                    return res;
+                }
+            }
+            catch (Exception e)
+            {
+                return e; 
+            }
+
+            return new UserDTO();
         }
     }
 }
