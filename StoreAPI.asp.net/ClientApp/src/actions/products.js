@@ -15,6 +15,7 @@ export function ProductsFetchData(url) {
                 return response
             })
             .then(response => response.json())
+            // .then(products=>console.log(products))
             .then(products => dispatch(ProductsFetchDataSuccess(products)))
     }
 }

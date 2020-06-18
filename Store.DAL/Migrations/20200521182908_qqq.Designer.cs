@@ -10,8 +10,8 @@ using Store.DAL.EF;
 namespace Store.DAL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20200517162354_sss")]
-    partial class sss
+    [Migration("20200521182908_qqq")]
+    partial class qqq
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -133,15 +133,21 @@ namespace Store.DAL.Migrations
 
             modelBuilder.Entity("Store.DAL.Entities.Category", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("NameCategory");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new { Id = 1, NameCategory = "Ноутбуки" },
+                        new { Id = 2, NameCategory = "Телефони" },
+                        new { Id = 3, NameCategory = "Комп'ютери" }
+                    );
                 });
 
             modelBuilder.Entity("Store.DAL.Entities.Product", b =>
@@ -150,7 +156,9 @@ namespace Store.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId");
+                    b.Property<int>("CategoryId");
+
+                    b.Property<string>("ImagePath");
 
                     b.Property<string>("Name");
 
@@ -267,9 +275,10 @@ namespace Store.DAL.Migrations
 
             modelBuilder.Entity("Store.DAL.Entities.Product", b =>
                 {
-                    b.HasOne("Store.DAL.Entities.Category")
+                    b.HasOne("Store.DAL.Entities.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

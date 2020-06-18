@@ -11,6 +11,7 @@ namespace Store.DAL.Interfaces
         RoleManager<IdentityRole> RoleManager { get; }
         SignInManager<User> SignInManager { get; }
         IProductRepository ProductRepository { get; }
+        ICategoryRepository CategoryRepository { get; }
         Task SaveAsync();
     }
 }

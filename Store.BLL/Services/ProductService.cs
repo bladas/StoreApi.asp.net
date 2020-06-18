@@ -38,27 +38,25 @@ namespace Store.BLL.Services
         }
         public async Task DeleteProductAsync(int Id)
         {
-            //await Database.ProductRepository.DeleteAsync(Id);
+ 
+            await Database.ProductRepository.DeleteAsync(Id);
         }
 
         public async Task<IEnumerable<ProductDTO>> GetAllProductsAsync()
         {
             var x = await Database.ProductRepository.GetAllAsync();
-            List<ProductDTO> result = _mapper.Map<List<ProductDTO>>(x);//надо проверить
-            //List<CarDTO> result = new List<CarDTO>();
-            //foreach (var element in x)
-            //    result.Add(_mapper.Map<Car, CarDTO>(element));
+            List<ProductDTO> result = _mapper.Map<List<ProductDTO>>(x);
             return result;
         }
-        /*
         public async Task<ProductDTO> GetProductByIdAsync(int Id)
         {
-            
-            var x = await Database.ProductRepository.GetAsync(1);
+            var x = await Database.ProductRepository.GetAsync(Id);
             return _mapper.Map<Product, ProductDTO>(x);
-            
         }
-        */
+        public async Task<Product> GetProductDetailsByIdAsync(int Id)
+        {
+            return await Database.ProductRepository.GetProductDetailsByIdAsync(Id);
+        }
         public async Task UpdateProductAsync(ProductDTO prd)
         {
             var x = _mapper.Map<ProductDTO, Product>(prd);

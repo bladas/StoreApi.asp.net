@@ -46,7 +46,7 @@ namespace StoreAPI.asp.net.Controllers
                                 
         }
 
-        [HttpPut("updateproduct")]
+        [HttpPut("updateproduct/{id}")]
         public IActionResult Update(ProductViewModel model)
         {
             var product = _context.Products.FirstOrDefault(x => x.Id == model.Id);
@@ -62,7 +62,7 @@ namespace StoreAPI.asp.net.Controllers
             return Ok();
         }
 
-        [HttpDelete("deleteproduct")]
+        [HttpDelete("deleteproduct/{id}")]
         public IActionResult Delete(int id)
         {
             var product = _context.Products.FirstOrDefault(x => x.Id == id);
@@ -76,10 +76,11 @@ namespace StoreAPI.asp.net.Controllers
         }
 
 
-        [HttpGet("getproduct")]
-        public IActionResult GetProduct(int id)
+        [HttpGet("getproduct/{id}")]
+        public async Task<IActionResult> GetProduct(int id)
         {
-            var product = _context.Products.FirstOrDefault(x => x.Id == id);
+            var product = await _productService.GetProductByIdAsync(id);
+            
             if (product == null) return BadRequest();
 
             return Ok(product);

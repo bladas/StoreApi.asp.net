@@ -15,6 +15,7 @@ namespace Store.DAL.Repositories
         public SignInManager<User> SignInManager { get; }
 
         private IProductRepository _productRepository;
+        private ICategoryRepository _categoryRepository;
         public UnitOfWork(AppDBContext context, SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             db = context;
@@ -24,6 +25,8 @@ namespace Store.DAL.Repositories
         }
         public IProductRepository ProductRepository =>
             _productRepository ?? (_productRepository = new ProductRepository(db));
+         public ICategoryRepository CategoryRepository =>
+            _categoryRepository ?? (_categoryRepository = new CategoryRepository(db));
 
         public async Task SaveAsync()
         {

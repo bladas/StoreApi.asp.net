@@ -15,6 +15,7 @@ namespace StoreAPI.asp.net.MappingProfile
         public MappingProfile()
         {
             //User
+            CreateMap<CategoryDTO, Category>();
             CreateMap<ProductDTO, Product>();
             CreateMap<User, UserDTO>();
             CreateMap<UserDTO, User>();
@@ -27,7 +28,10 @@ namespace StoreAPI.asp.net.MappingProfile
             CreateMap<ProductViewModel, ProductDTO>()
                 .ForMember(dest => dest.Name, opts => opts.MapFrom(x => x.Name))
                 .ForMember(dest => dest.ShortDescription, opts => opts.MapFrom(x => x.ShortDescription))
-                .ForMember(dest => dest.Price, opts => opts.MapFrom(x => x.Price));
+                .ForMember(dest => dest.Price, opts => opts.MapFrom(x => x.Price))
+                .ForMember(dest => dest.ImagePath, opts => opts.MapFrom(x => x.ImagePath))
+                .ForMember(dest => dest.CategoryId, opts => opts.MapFrom(x => x.CategoryId));
+                
 
 
             CreateMap<RegisterViewModel, UserDTO>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
@@ -36,6 +40,9 @@ namespace StoreAPI.asp.net.MappingProfile
             CreateMap<LoginViewModel, UserDTO>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
             CreateMap<UserDTO, User>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
 
+            //Category
+            CreateMap<CategoryDTO, Category>().ForMember(au => au.NameCategory, map => map.MapFrom(vm => vm.NameCategory));
+            CreateMap<CategoryDTO, Category>().ForMember(au => au.Id, map => map.MapFrom(vm => vm.Id));
 
         }
     }

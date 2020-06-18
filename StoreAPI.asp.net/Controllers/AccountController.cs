@@ -69,9 +69,14 @@ namespace StoreAPI.asp.net.Controllers
         [Route("getuserbytoken")]
         public async Task<ActionResult<UserDTO>> GetUserByToken()
         {
-            string Token = Request.Headers["token"];
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            string Token = Request.Headers["token"];    
             var res = await _userService.GetUserFromAccessToken(Token);
-            
+            if (res == "Exception")
+                return BadRequest();
             return Ok(res);
         }
     }

@@ -13,7 +13,7 @@ namespace Store.BLL.Interfaces
         Task<OperationDetails> AddProductAsync(ProductDTO car);
         Task UpdateProductAsync(ProductDTO car);
         Task DeleteProductAsync(int Id);
-        //Task<ProductDTO> GetProductByIdAsync(int Id);
+        Task<ProductDTO> GetProductByIdAsync(int Id);
         Task<IEnumerable<ProductDTO>> GetAllProductsAsync();
     }
 }

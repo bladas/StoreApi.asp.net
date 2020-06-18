@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace StoreAPI.asp.net
 {
@@ -83,7 +84,8 @@ namespace StoreAPI.asp.net
                            ClockSkew = TimeSpan.Zero
                        };
                    });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -108,6 +110,8 @@ namespace StoreAPI.asp.net
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<ICategoryService, CategoryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

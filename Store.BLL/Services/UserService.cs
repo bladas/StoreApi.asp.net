@@ -94,7 +94,7 @@ namespace Store.BLL.Services
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             // Expiration time
-            var expiration = DateTime.UtcNow;
+            var expiration = DateTime.UtcNow.AddDays(1);
 
             JwtSecurityToken token = new JwtSecurityToken(
                issuer: null,
@@ -136,9 +136,9 @@ namespace Store.BLL.Services
                     return res;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return e; 
+                return "Exception"; 
             }
 
             return new UserDTO();

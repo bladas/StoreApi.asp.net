@@ -10,9 +10,11 @@ namespace Store.BLL.Interfaces
 {
     public interface ICategoryService
     {
-        List<Category> GetAllCategories();
-        Task<OperationDetails> AddCategory(string Name);
-        Task<OperationDetails> Delete(int id);
-
+        
+        Task<OperationDetails> AddCategoryAsync(CategoryDTO category);
+        Task UpdateCategoryAsync(CategoryDTO category);
+        Task DeleteCategoryAsync(int Id);
+        Task<object> GetCategoryByIdAsync(int Id);
+        Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync();
     }
 }

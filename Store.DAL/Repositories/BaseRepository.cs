@@ -7,10 +7,11 @@ using Store.DAL.Entities;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Store.DAL.Interfaces.EntityInterfaces;
 
 namespace Store.DAL.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    public class BaseRepository<T, TId> : IBaseRepository<T, TId> where T : class, IEntity<TId>
     {
         protected readonly AppDBContext context;
         protected readonly DbSet<T> _dbSet;
@@ -33,14 +34,14 @@ namespace Store.DAL.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(T id)
+        public async Task DeleteAsync(TId id)
         {
             T x = await _dbSet.FindAsync(id);
             _dbSet.Remove(x);
             await context.SaveChangesAsync();
         }
 
-        public async Task<T> GetAsync(T Id)
+        public async Task<T> GetAsync(TId Id)
         {
             return await _dbSet.FindAsync(Id);
         }

@@ -18,15 +18,9 @@ namespace StoreAPI.asp.net.ViewModel
         public string ShortDescription { get; set; }
         [Required]
         public decimal Price { get; set; }
-        
-        /*
-        public string LongDescription { get; set; }
-        
+        [Required]
+        public int CategoryId { get; set; }
 
-        public bool IsFavourite { get; set; }
-        public int Available { get; set; }
-        public int? CategoryId { get; set; }
-        public virtual Category Category { get; set; }
-        */
+        public string ImagePath { get; set; }
     }
 }

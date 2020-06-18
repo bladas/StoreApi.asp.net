@@ -1,3 +1,7 @@
+
+import React from "react";
+
+
 export const userPostFetch = user => {
   return dispatch => {
     return fetch("https://localhost:44398/api/account/register/", {
@@ -9,26 +13,19 @@ export const userPostFetch = user => {
       body: JSON.stringify(user
       )
     })
-
-
-
        .then(resp => resp.json())
        .then(data => {
          if (data.message) {
            //Тут прописываем логику
         } else {
            localStorage.setItem("token", data.token)
-           dispatch(loginUser(data.user))
          }
        })
   }
 
 }
 
-const loginUser = userObj => ({
-    type: 'LOGIN_USER',
-    payload: userObj
-})
+
 
 export const userLoginFetch = user => {
   return dispatch => {
@@ -43,23 +40,26 @@ export const userLoginFetch = user => {
     })
       .then(resp => resp.json())
       .then(data => {
-           console.log(data.token)
         if (data.message) {
          //тут ваша логика
         } else {
           localStorage.setItem("token", data.token)
-          dispatch(loginUser(data.user))
         }
       })
 
   }
 }
-export const getProfileFetch = () => {
-  return dispatch => {
-    const token = localStorage.token;
-
-    if (token) {
-      return fetch("https://localhost:44398/api/account/getuserbytoken", {
+export function loginUser(user) {
+    return{
+        type:"LOGIN_USER",
+        user
+    }
+}
+export function UserFetchData(url) {
+    return (dispatch)=> {
+        const token = localStorage.token;
+     if (token) {
+      return fetch(url, {
        method: "GET",
         headers: {
           'Content-Type': 'application/json',
@@ -69,16 +69,56 @@ export const getProfileFetch = () => {
 
 
       })
-        .then(resp => resp.json())
-        .then(data => {
-            console.log(data)
-          if (data.message) {
-            // Будет ошибка если token не дествительный
-            localStorage.removeItem("token")
-          } else {
-            dispatch(loginUser(data.user))
-          }
-        })
+            .then(response => {
+                if (!response.ok){
+                    throw new Error(response.statusText)
+                }
+                return response
+            })
+            .then(response => response.json())
+
+            .then(data => console.log(data))
+            .then(user => dispatch(loginUser(user)))
     }
-  }
 }
+}
+// export function loginUser(user) {
+//     return{
+//         type:"LOGIN_USER",
+//         user
+//     }
+// }
+// // "https://localhost:44398/api/account/getuserbytoken"
+// export function UserFetchData(url){
+//   return (dispatch) => {
+//     const token = localStorage.token;
+//
+//     if (token) {
+//       return fetch(url, {
+//        method: "GET",
+//         headers: {
+//           'Content-Type': 'application/json',
+//           Accept: 'application/json',
+//           'token': token
+//       },
+//
+//
+//       })
+//         .then(resp => resp.json())
+//           // .then(data=>console.log(data))
+//         .then(data => dispatch(loginUser(data)))
+//
+//
+//           // if (data.message) {
+//           //   // Будет ошибка если token не дествительный
+//           //   localStorage.removeItem("token")
+//           // } else {
+//
+//
+//   //         }
+//   //       })
+//   //   }
+//   // }
+// }}}
+
+

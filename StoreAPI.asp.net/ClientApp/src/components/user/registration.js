@@ -21,62 +21,119 @@ class Signup extends Component {
   handleSubmit = event => {
     event.preventDefault()
     this.props.userPostFetch(this.state)
+      if (localStorage.token){
+          this.props.history.push('/home')
+
+        window.location.reload();
+      }
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <h1>Sign Up For An Account</h1>
+        <div className="section">
 
+		<div className="container">
+
+			<div className="row">
+              <div className="text-center">
+                 <h1>Sign Up For An Account</h1>
+              </div>
+       <div className="col-md-12">
+      <form onSubmit={this.handleSubmit}>
+      <div className="col-md-12">
+      <div className="col-md-4"></div>
+        <div className="col-md-2">
         <label>FirstName</label>
+          </div>
+         <div className="col-md-1">
         <input
           name='FirstName'
           placeholder='First Name'
           value={this.state.FirstName}
           onChange={this.handleChange}
-          /><br/>
+        /></div>
+          <br/>
 
+      </div>
+        <div className="col-md-12">
+      <div className="col-md-4"></div>
+           <div className="col-md-2">
         <label>LastName</label>
+           </div>
+           <div className="col-md-1">
         <input
           type='LastName'
           name='LastName'
           placeholder='LastName'
           value={this.state.LastName}
           onChange={this.handleChange}
-          /><br/>
-
+          />
+           </div><br/>
+        </div>
+          <div className="col-md-12">
+      <div className="col-md-4"></div>
+             <div className="col-md-2">
         <label>Email</label>
+             </div>
+             <div className="col-md-1">
           <input
             name='Email'
             placeholder='Email'
             value={this.state.Email}
             onChange={this.handleChange}
-            /><br/>
+            />
+             </div><br/>
+          </div>
+          <div className="col-md-12">
+      <div className="col-md-4"></div>
+             <div className="col-md-2">
         <label>PhoneNumber</label>
+             </div>
+             <div className="col-md-1">
           <input
             name='PhoneNumber'
             placeholder='PhoneNumber'
             value={this.state.PhoneNumber}
             onChange={this.handleChange}
-            /><br/>
+            />
+             </div><br/>
+          </div>
+          <div className="col-md-12">
+      <div className="col-md-4"></div>
+             <div className="col-md-2">
           <label>Password</label>
+             </div>
+             <div className="col-md-1">
           <input
             name='Password'
             placeholder='Password'
             value={this.state.Password}
             onChange={this.handleChange}
-            /><br/>
+            />
+             </div><br/>
+          </div>
+          <div className="col-md-12">
+      <div className="col-md-4"></div>
+             <div className="col-md-2">
           <label>ConfirmPassword</label>
+             </div>
+             <div className="col-md-1">
           <input
             name='ConfirmPassword'
             placeholder='ConfirmPassword'
             value={this.state.ConfirmPassword}
             onChange={this.handleChange}
-            /><br/>
+          /></div><br/>
+          </div>
+      <div className="text-center">
+         <input type='submit' className="btn btn"/>
+      </div>
 
-
-        <input type='submit'/>
       </form>
+          </div>
+            </div>
+        </div>
+        </div>
     )
   }
 }

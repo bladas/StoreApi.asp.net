@@ -26,6 +26,21 @@ namespace Store.DAL.EF
             modelBuilder.Entity<Product>()
            .ToTable("Product");
 
+            modelBuilder.Entity<Category>()
+               .HasKey(p => p.Id);
+           
+              
+            modelBuilder.Entity<Product>()
+                .HasOne<Category>(c => c.Category)
+                .WithMany(t => t.Products)
+                .HasForeignKey(c => c.CategoryId);
+           
+            modelBuilder.Entity<Category>().HasData(new Category[] {
+                new Category{Id=1,NameCategory="Ноутбуки" },
+                new Category{Id=2,NameCategory="Телефони" },
+                new Category{Id=3,NameCategory="Комп'ютери" },
+               
+            });
         }
     }
 }
